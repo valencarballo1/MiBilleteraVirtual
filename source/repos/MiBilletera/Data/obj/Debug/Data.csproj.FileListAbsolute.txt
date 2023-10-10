@@ -1,0 +1,12 @@
+C:\Users\valen\source\repos\MiBilletera\Data\bin\Debug\Data.dll.config
+C:\Users\valen\source\repos\MiBilletera\Data\bin\Debug\Data.dll
+C:\Users\valen\source\repos\MiBilletera\Data\bin\Debug\Data.pdb
+C:\Users\valen\source\repos\MiBilletera\Data\bin\Debug\EntityFramework.dll
+C:\Users\valen\source\repos\MiBilletera\Data\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\valen\source\repos\MiBilletera\Data\bin\Debug\EntityFramework.xml
+C:\Users\valen\source\repos\MiBilletera\Data\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\valen\source\repos\MiBilletera\Data\obj\Debug\Data.csproj.AssemblyReference.cache
+C:\Users\valen\source\repos\MiBilletera\Data\obj\Debug\Data.csproj.CoreCompileInputs.cache
+C:\Users\valen\source\repos\MiBilletera\Data\obj\Debug\Data.csproj.CopyComplete
+C:\Users\valen\source\repos\MiBilletera\Data\obj\Debug\Data.dll
+C:\Users\valen\source\repos\MiBilletera\Data\obj\Debug\Data.pdb

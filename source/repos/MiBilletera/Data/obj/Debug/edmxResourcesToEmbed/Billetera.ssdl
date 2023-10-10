@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BilleteraModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Expenses">
+    <Key>
+      <PropertyRef Name="ExpenseID" />
+    </Key>
+    <Property Name="ExpenseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ExpenseDate" Type="date" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Description" Type="varchar" MaxLength="255" />
+    <Property Name="ExpenseTypeID" Type="int" />
+    <Property Name="IsActive" Type="bit" />
+    <Property Name="SalaryID" Type="int" />
+  </EntityType>
+  <EntityType Name="ExpenseTypes">
+    <Key>
+      <PropertyRef Name="ExpenseTypeID" />
+    </Key>
+    <Property Name="ExpenseTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="ExpenseTypeName" Type="varchar" MaxLength="100" />
+    <Property Name="IsActive" Type="bit" />
+  </EntityType>
+  <EntityType Name="Salaries">
+    <Key>
+      <PropertyRef Name="SalaryID" />
+    </Key>
+    <Property Name="SalaryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Period" Type="varchar" MaxLength="6" />
+  </EntityType>
+  <Association Name="FK_ExpenseType">
+    <End Role="ExpenseTypes" Type="Self.ExpenseTypes" Multiplicity="0..1" />
+    <End Role="Expenses" Type="Self.Expenses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ExpenseTypes">
+        <PropertyRef Name="ExpenseTypeID" />
+      </Principal>
+      <Dependent Role="Expenses">
+        <PropertyRef Name="ExpenseTypeID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Salary">
+    <End Role="Salaries" Type="Self.Salaries" Multiplicity="0..1" />
+    <End Role="Expenses" Type="Self.Expenses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Salaries">
+        <PropertyRef Name="SalaryID" />
+      </Principal>
+      <Dependent Role="Expenses">
+        <PropertyRef Name="SalaryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="BilleteraModelStoreContainer">
+    <EntitySet Name="Expenses" EntityType="Self.Expenses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ExpenseTypes" EntityType="Self.ExpenseTypes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Salaries" EntityType="Self.Salaries" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_ExpenseType" Association="Self.FK_ExpenseType">
+      <End Role="ExpenseTypes" EntitySet="ExpenseTypes" />
+      <End Role="Expenses" EntitySet="Expenses" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Salary" Association="Self.FK_Salary">
+      <End Role="Salaries" EntitySet="Salaries" />
+      <End Role="Expenses" EntitySet="Expenses" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

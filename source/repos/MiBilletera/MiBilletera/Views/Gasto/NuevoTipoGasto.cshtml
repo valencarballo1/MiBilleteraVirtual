@@ -1,0 +1,51 @@
+﻿
+@{
+}
+
+<h4 class="text-center">Nuevo Tipo Gasto</h4>
+
+<div class="form-group">
+    <label for="ExpenseTypeName">Descripción:</label>
+    <input type="text" id="ExpenseTypeName" name="ExpenseTypeName" required>
+</div>
+
+<button id="submitButton" class="btn-submit">Agregar Tipo Gasto</button>
+
+<script>
+    // Función para enviar la solicitud AJAX
+    function enviarSolicitud() {
+        // Obtener los datos del formulario (o los que necesites)
+        var expenseTypeName = document.getElementById("ExpenseTypeName").value;
+
+        // Realizar la solicitud AJAX
+        $.ajax({
+            url: "@Url.Action("AgregarTipoGasto", "Gasto")",
+            type: "POST",
+            data: { ExpenseTypeName: expenseTypeName },
+            success: function(response) {
+                if (response === "Ok") {
+                    // Mostrar SweetAlert si la respuesta es "Ok"
+                    swal("Tipo de gasto agregado correctamente", {
+                        icon: "success",
+                    }).then(() => {
+                        // Redireccionar al Home
+                        window.location.href = "@Url.Action("Index", "Home")";
+                    });
+                } else {
+                    // Manejar otros escenarios de respuesta si es necesario
+                    console.error("Error en la respuesta:", response);
+                }
+            },
+            error: function(xhr, status, error) {
+                // Manejar errores si es necesario
+                console.error("Error al enviar la solicitud:", error);
+            }
+        });
+    }
+
+    // Escuchar el evento de clic en el botón
+    document.getElementById("submitButton").addEventListener("click", function(event) {
+        event.preventDefault();  // Prevenir el comportamiento normal del botón
+        enviarSolicitud();
+    });
+</script>

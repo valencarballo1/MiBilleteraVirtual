@@ -1,0 +1,73 @@
+﻿.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.column {
+    flex: 1;
+    margin: 10px;
+    max-width: 300px; /* Adjust max-width to fit your design */
+}
+/* Small devices (e.g., phones) */
+@media (max-width: 576px) {
+    .column {
+        max-width: 100%; /* Adjust to make columns full width on small devices */
+    }
+}
+
+/* Medium devices (e.g., tablets) */
+@media (min-width: 576px) and (max-width: 768px) {
+    .column {
+        max-width: 48%; /* Adjust to make 2 columns per row */
+    }
+}
+
+/* Large devices (e.g., desktops) */
+@media (min-width: 768px) {
+    .column {
+        max-width: 30%; /* Adjust to make 3 columns per row */
+    }
+}
+
+body {
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    color: #333;
+}
+
+/* Use appropriate color palette */
+.primary-color {
+    color: #007BFF;
+}
+
+.secondary-color {
+    color: #6C757D;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-primary {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+.btn-secondary {
+    background-color: #6C757D;
+    color: #fff;
+}

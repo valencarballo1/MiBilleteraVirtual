@@ -1,0 +1,15 @@
+C:\Users\valen\source\repos\MiBilletera\Business\bin\Debug\Business.dll
+C:\Users\valen\source\repos\MiBilletera\Business\bin\Debug\Business.pdb
+C:\Users\valen\source\repos\MiBilletera\Business\bin\Debug\Data.dll
+C:\Users\valen\source\repos\MiBilletera\Business\bin\Debug\EntityFramework.dll
+C:\Users\valen\source\repos\MiBilletera\Business\bin\Debug\Data.pdb
+C:\Users\valen\source\repos\MiBilletera\Business\bin\Debug\Data.dll.config
+C:\Users\valen\source\repos\MiBilletera\Business\bin\Debug\EntityFramework.xml
+C:\Users\valen\source\repos\MiBilletera\Business\obj\Debug\Business.csproj.AssemblyReference.cache
+C:\Users\valen\source\repos\MiBilletera\Business\obj\Debug\Business.csproj.CoreCompileInputs.cache
+C:\Users\valen\source\repos\MiBilletera\Business\obj\Debug\Business.csproj.CopyComplete
+C:\Users\valen\source\repos\MiBilletera\Business\obj\Debug\Business.dll
+C:\Users\valen\source\repos\MiBilletera\Business\obj\Debug\Business.pdb
+C:\Users\valen\source\repos\MiBilletera\Business\bin\Debug\Repository.dll
+C:\Users\valen\source\repos\MiBilletera\Business\bin\Debug\Repository.pdb
+C:\Users\valen\source\repos\MiBilletera\Business\bin\Debug\Repository.dll.config

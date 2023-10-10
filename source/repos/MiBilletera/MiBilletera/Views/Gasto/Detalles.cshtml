@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles</h2>
+<div id="idSalario" data-id="@Model" style="display: none;">
+    <!-- El valor de idSalario está almacenado en el atributo de datos -->
+</div>
+<div>
+    <table id="expenseTable" class="display">
+        <thead>
+            <tr>
+                <th>Tipo de gasto</th>
+                <th>Monto</th>
+                <th>Nombre</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    let idSalario = $('#idSalario').data('id');
+
+    console.log('idSalario:', idSalario);
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("VerDetalle", "Gasto")',
+            type: 'GET',
+            dataType: 'json',
+            data: { idSalario: idSalario },
+            success: function (data) {
+
+                var tableData = data.map(function (item) {
+                    return [item.ExpenseTypeName, item.Amount, item.Description];
+                });
+
+                var table = $('#expenseTable').DataTable({
+                    data: tableData,
+                    columns: [
+                        { title: 'Tipo de gasto' },
+                        { title: 'Monto' },
+                        { title: 'Nombre' }
+                    ]
+                });
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Error al obtener los datos para la tabla: " + textStatus + ", " + errorThrown);
+            }
+        });
+    });
+</script>

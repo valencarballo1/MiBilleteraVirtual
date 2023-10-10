@@ -1,0 +1,206 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="BilleteraModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Expenses">
+          <Key>
+            <PropertyRef Name="ExpenseID" />
+          </Key>
+          <Property Name="ExpenseID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExpenseDate" Type="date" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Description" Type="varchar" MaxLength="255" />
+          <Property Name="ExpenseTypeID" Type="int" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="SalaryID" Type="int" />
+        </EntityType>
+        <EntityType Name="ExpenseTypes">
+          <Key>
+            <PropertyRef Name="ExpenseTypeID" />
+          </Key>
+          <Property Name="ExpenseTypeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ExpenseTypeName" Type="varchar" MaxLength="100" />
+          <Property Name="IsActive" Type="bit" />
+        </EntityType>
+        <EntityType Name="Salaries">
+          <Key>
+            <PropertyRef Name="SalaryID" />
+          </Key>
+          <Property Name="SalaryID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Amount" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Period" Type="varchar" MaxLength="6" />
+        </EntityType>
+        <Association Name="FK_ExpenseType">
+          <End Role="ExpenseTypes" Type="Self.ExpenseTypes" Multiplicity="0..1" />
+          <End Role="Expenses" Type="Self.Expenses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpenseTypes">
+              <PropertyRef Name="ExpenseTypeID" />
+            </Principal>
+            <Dependent Role="Expenses">
+              <PropertyRef Name="ExpenseTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Salary">
+          <End Role="Salaries" Type="Self.Salaries" Multiplicity="0..1" />
+          <End Role="Expenses" Type="Self.Expenses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Salaries">
+              <PropertyRef Name="SalaryID" />
+            </Principal>
+            <Dependent Role="Expenses">
+              <PropertyRef Name="SalaryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BilleteraModelStoreContainer">
+          <EntitySet Name="Expenses" EntityType="Self.Expenses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpenseTypes" EntityType="Self.ExpenseTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Salaries" EntityType="Self.Salaries" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ExpenseType" Association="Self.FK_ExpenseType">
+            <End Role="ExpenseTypes" EntitySet="ExpenseTypes" />
+            <End Role="Expenses" EntitySet="Expenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Salary" Association="Self.FK_Salary">
+            <End Role="Salaries" EntitySet="Salaries" />
+            <End Role="Expenses" EntitySet="Expenses" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BilleteraModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="BilleteraEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Expenses" EntityType="BilleteraModel.Expenses" />
+          <EntitySet Name="ExpenseTypes" EntityType="BilleteraModel.ExpenseTypes" />
+          <EntitySet Name="Salaries" EntityType="BilleteraModel.Salaries" />
+          <AssociationSet Name="FK_ExpenseType" Association="BilleteraModel.FK_ExpenseType">
+            <End Role="ExpenseTypes" EntitySet="ExpenseTypes" />
+            <End Role="Expenses" EntitySet="Expenses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Salary" Association="BilleteraModel.FK_Salary">
+            <End Role="Salaries" EntitySet="Salaries" />
+            <End Role="Expenses" EntitySet="Expenses" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Expenses">
+          <Key>
+            <PropertyRef Name="ExpenseID" />
+          </Key>
+          <Property Name="ExpenseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExpenseDate" Type="DateTime" Precision="0" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="ExpenseTypeID" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="SalaryID" Type="Int32" />
+          <NavigationProperty Name="ExpenseTypes" Relationship="BilleteraModel.FK_ExpenseType" FromRole="Expenses" ToRole="ExpenseTypes" />
+          <NavigationProperty Name="Salaries" Relationship="BilleteraModel.FK_Salary" FromRole="Expenses" ToRole="Salaries" />
+        </EntityType>
+        <EntityType Name="ExpenseTypes">
+          <Key>
+            <PropertyRef Name="ExpenseTypeID" />
+          </Key>
+          <Property Name="ExpenseTypeID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ExpenseTypeName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <NavigationProperty Name="Expenses" Relationship="BilleteraModel.FK_ExpenseType" FromRole="ExpenseTypes" ToRole="Expenses" />
+        </EntityType>
+        <EntityType Name="Salaries">
+          <Key>
+            <PropertyRef Name="SalaryID" />
+          </Key>
+          <Property Name="SalaryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Period" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Expenses" Relationship="BilleteraModel.FK_Salary" FromRole="Salaries" ToRole="Expenses" />
+        </EntityType>
+        <Association Name="FK_ExpenseType">
+          <End Type="BilleteraModel.ExpenseTypes" Role="ExpenseTypes" Multiplicity="0..1" />
+          <End Type="BilleteraModel.Expenses" Role="Expenses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ExpenseTypes">
+              <PropertyRef Name="ExpenseTypeID" />
+            </Principal>
+            <Dependent Role="Expenses">
+              <PropertyRef Name="ExpenseTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Salary">
+          <End Type="BilleteraModel.Salaries" Role="Salaries" Multiplicity="0..1" />
+          <End Type="BilleteraModel.Expenses" Role="Expenses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Salaries">
+              <PropertyRef Name="SalaryID" />
+            </Principal>
+            <Dependent Role="Expenses">
+              <PropertyRef Name="SalaryID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BilleteraModelStoreContainer" CdmEntityContainer="BilleteraEntities">
+          <EntitySetMapping Name="Expenses">
+            <EntityTypeMapping TypeName="BilleteraModel.Expenses">
+              <MappingFragment StoreEntitySet="Expenses">
+                <ScalarProperty Name="SalaryID" ColumnName="SalaryID" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ExpenseTypeID" ColumnName="ExpenseTypeID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
+                <ScalarProperty Name="ExpenseID" ColumnName="ExpenseID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ExpenseTypes">
+            <EntityTypeMapping TypeName="BilleteraModel.ExpenseTypes">
+              <MappingFragment StoreEntitySet="ExpenseTypes">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ExpenseTypeName" ColumnName="ExpenseTypeName" />
+                <ScalarProperty Name="ExpenseTypeID" ColumnName="ExpenseTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Salaries">
+            <EntityTypeMapping TypeName="BilleteraModel.Salaries">
+              <MappingFragment StoreEntitySet="Salaries">
+                <ScalarProperty Name="Period" ColumnName="Period" />
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="SalaryID" ColumnName="SalaryID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

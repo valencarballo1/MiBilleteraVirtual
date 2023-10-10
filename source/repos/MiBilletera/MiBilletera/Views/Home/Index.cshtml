@@ -1,0 +1,194 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<main>
+    <div id="idSalario" data-id="@Model" style="display: none;">
+        <!-- El valor de idSalario está almacenado en el atributo de datos -->
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3>Precio del dólar hoy</h3>
+        <span id="resultado"></span>
+    </div>
+
+    <div class="mb-4">
+        <button class="btn btn-primary rounded-pill" id="btnObtenerContenido">Obtener valor del dólar blue</button>
+    </div>
+
+    <div class="d-flex flex-wrap">
+        <div class="dashboard col-md-6 mb-4">
+            <h2>Dashboard</h2>
+            <div class="pie-chart">
+                <!-- Aquí puedes agregar tu gráfica de pastel -->
+                <canvas id="pieChart"></canvas>
+            </div>
+            <button class="btn btn-primary" id="verDetalleGasto">Ver gastos</button>
+        </div>
+
+        <div class="expense-form col-md-6 mb-4">
+            <div class="mb-3">
+                <button class="btn btn-primary rounded-pill" onclick="loadModalContent()">Agregar tipo de gasto nuevo</button>
+            </div>
+
+            <h2>Agregar Gasto</h2>
+            <form action="@Url.Action("AgregarGasto", "Gasto")" method="post">
+                <input type="hidden" id="salaryID" name="salaryID" value="@Model"> <!-- Campo oculto para salaryID -->
+
+                <div class="form-group">
+                    <label for="amount">Monto:</label>
+                    <input type="number" id="amount" name="amount" step="0.01" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="description">Nombre:</label>
+                    <input type="text" id="description" name="description" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="ExpenseTypeID">Tipo de gasto:</label>
+                    <select class="form-control" id="gastoTipo" name="ExpenseTypeID">
+                        <option value="">Seleccionar Tipo Gasto</option>
+                        <!-- Add options here -->
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-primary rounded-pill">Agregar Gasto</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalAgregarTipoGasto" tabindex="-1" role="dialog" aria-labelledby="modalAgregarTipoGastoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- Add modal header content -->
+                </div>
+                <div class="modal-body" id="modalContent">
+                    <!-- Contenido de la vista del tipo de gasto se cargará aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#btnObtenerContenido').click(function () {
+            obtenerContenidoDiv();
+        });
+
+        $.ajax({
+            url: '@Url.Action("GetAllTipoGasto", "Gasto")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+        // Código para agregar las opciones al DropDownList
+        var dropdownList = $('#gastoTipo'); // Reemplaza "IdRol" con el ID del elemento DropDownList en tu vista
+        console.log(data);
+        // Agregar las opciones al DropDownList
+        $.each(data, function (index, tipo) {
+            dropdownList.append($('<option></option>').val(tipo.ExpenseTypeID).text(tipo.ExpenseTypeName));
+        });
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Error en la llamada AJAX: " + textStatus + ", " + errorThrown);
+            }
+        });
+
+    });
+    let idSalario = $('#idSalario').data('id');
+
+    console.log('idSalario:', idSalario);
+
+    document.getElementById('verDetalleGasto').addEventListener('click', function () {
+        // Code to execute when the button is clicked
+        console.log('Button with ID "verDetalleGasto" was clicked.');
+        window.location.href = '/Gasto/Detalles?idSalario=' + idSalario;
+    });
+
+
+    function obtenerContenidoDiv() {
+        $.ajax({
+            url: '/Home/ExtraerContenidoDiv',
+            type: 'GET',
+            success: function (data) {
+                $('#resultado').html(data);
+                console.log(data);
+            },
+            error: function (error) {
+                console.error('Error al obtener el contenido del div:', error);
+                $('#resultado').html('Error al obtener el contenido del div.');
+            }
+        });
+    }
+
+    function loadModalContent() {
+        // Obtener la URL de la vista para el contenido del modal
+        var url = '@Url.Action("NuevoTipoGasto", "Gasto")';  // Reemplaza YourController con tu controlador
+
+        // Realizar la solicitud AJAX para cargar el contenido de la vista
+        $.get(url, function (data) {
+            // Insertar el contenido de la vista en el cuerpo del modal
+            $('#modalContent').html(data);
+
+            // Mostrar el modal
+            $('#modalAgregarTipoGasto').modal('show');
+        });
+    }
+
+    $('form').submit(function (event) {
+        event.preventDefault();
+        console.log($(this).serialize());
+
+        $.ajax({
+            url: '@Url.Action("AgregarGasto", "Gasto")',
+            type: 'POST',
+            dataType: 'json',
+            data: $(this).serialize(),
+            success: function (response) {
+                if (response === "Ok") {
+                    swal("El gasto fue agregado correctamente", {
+                        icon: "success",
+                    }).then(() => {
+                        // Redireccionar al Home
+                        window.location.href = '/Home/Index?idSalario=' + data.idSalario;
+                    });
+                } else {
+                    swal("Hubo un error en la carga", {
+                        icon: "error",
+                    }).then(() => {
+                        // Redireccionar al Home
+                        window.location.href = '/Home/Index?idSalario=' + data.idSalario;
+                    });
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                swal("Hubo un error en la carga", {
+                    icon: "error",
+                });
+            }
+        });
+    });
+
+    var ctx = document.getElementById('pieChart').getContext('2d');
+
+    // Llamar a la acción para obtener los datos del gráfico
+    $.ajax({
+        url: '@Url.Action("ObtenerDatosGrafico", "Gasto")',
+        type: 'GET',
+        dataType: 'json',
+        data: { idSalario: idSalario },
+        success: function (data) {
+            var pieChart = new Chart(ctx, {
+                type: 'pie',
+                data: data
+            });
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Error al obtener los datos para el gráfico: " + textStatus + ", " + errorThrown);
+        }
+    });
+</script>
