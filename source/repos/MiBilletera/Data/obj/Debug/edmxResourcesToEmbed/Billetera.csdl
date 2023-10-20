@@ -12,6 +12,16 @@
       <End Role="Salaries" EntitySet="Salaries" />
       <End Role="Expenses" EntitySet="Expenses" />
     </AssociationSet>
+    <EntitySet Name="CurrencyTypes" EntityType="BilleteraModel.CurrencyTypes" />
+    <EntitySet Name="SalaryCurrencies" EntityType="BilleteraModel.SalaryCurrencies" />
+    <AssociationSet Name="FK__SalaryCur__Curre__797309D9" Association="BilleteraModel.FK__SalaryCur__Curre__797309D9">
+      <End Role="CurrencyTypes" EntitySet="CurrencyTypes" />
+      <End Role="SalaryCurrencies" EntitySet="SalaryCurrencies" />
+    </AssociationSet>
+    <AssociationSet Name="FK__SalaryCur__Salar__787EE5A0" Association="BilleteraModel.FK__SalaryCur__Salar__787EE5A0">
+      <End Role="Salaries" EntitySet="Salaries" />
+      <End Role="SalaryCurrencies" EntitySet="SalaryCurrencies" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Expenses">
     <Key>
@@ -44,6 +54,7 @@
     <Property Name="Amount" Type="Decimal" Precision="18" Scale="2" />
     <Property Name="Period" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="Expenses" Relationship="BilleteraModel.FK_Salary" FromRole="Salaries" ToRole="Expenses" />
+    <NavigationProperty Name="SalaryCurrencies" Relationship="BilleteraModel.FK__SalaryCur__Salar__787EE5A0" FromRole="Salaries" ToRole="SalaryCurrencies" />
   </EntityType>
   <Association Name="FK_ExpenseType">
     <End Type="BilleteraModel.ExpenseTypes" Role="ExpenseTypes" Multiplicity="0..1" />
@@ -65,6 +76,49 @@
         <PropertyRef Name="SalaryID" />
       </Principal>
       <Dependent Role="Expenses">
+        <PropertyRef Name="SalaryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="CurrencyTypes">
+    <Key>
+      <PropertyRef Name="CurrencyID" />
+    </Key>
+    <Property Name="CurrencyID" Type="Int32" Nullable="false" />
+    <Property Name="CurrencyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="SalaryCurrencies" Relationship="BilleteraModel.FK__SalaryCur__Curre__797309D9" FromRole="CurrencyTypes" ToRole="SalaryCurrencies" />
+  </EntityType>
+  <EntityType Name="SalaryCurrencies">
+    <Key>
+      <PropertyRef Name="SalaryID" />
+      <PropertyRef Name="CurrencyID" />
+    </Key>
+    <Property Name="SalaryID" Type="Int32" Nullable="false" />
+    <Property Name="CurrencyID" Type="Int32" Nullable="false" />
+    <Property Name="TotalMoney" Type="Decimal" Precision="18" Scale="2" />
+    <NavigationProperty Name="CurrencyTypes" Relationship="BilleteraModel.FK__SalaryCur__Curre__797309D9" FromRole="SalaryCurrencies" ToRole="CurrencyTypes" />
+    <NavigationProperty Name="Salaries" Relationship="BilleteraModel.FK__SalaryCur__Salar__787EE5A0" FromRole="SalaryCurrencies" ToRole="Salaries" />
+  </EntityType>
+  <Association Name="FK__SalaryCur__Curre__797309D9">
+    <End Type="BilleteraModel.CurrencyTypes" Role="CurrencyTypes" Multiplicity="1" />
+    <End Type="BilleteraModel.SalaryCurrencies" Role="SalaryCurrencies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CurrencyTypes">
+        <PropertyRef Name="CurrencyID" />
+      </Principal>
+      <Dependent Role="SalaryCurrencies">
+        <PropertyRef Name="CurrencyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__SalaryCur__Salar__787EE5A0">
+    <End Type="BilleteraModel.Salaries" Role="Salaries" Multiplicity="1" />
+    <End Type="BilleteraModel.SalaryCurrencies" Role="SalaryCurrencies" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Salaries">
+        <PropertyRef Name="SalaryID" />
+      </Principal>
+      <Dependent Role="SalaryCurrencies">
         <PropertyRef Name="SalaryID" />
       </Dependent>
     </ReferentialConstraint>

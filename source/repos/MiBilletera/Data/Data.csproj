@@ -65,6 +65,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Billetera.edmx</DependentUpon>
     </Compile>
+    <Compile Include="CurrencyTypes.cs">
+      <DependentUpon>Billetera.tt</DependentUpon>
+    </Compile>
     <Compile Include="Expenses.cs">
       <DependentUpon>Billetera.tt</DependentUpon>
     </Compile>
@@ -73,6 +76,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Salaries.cs">
+      <DependentUpon>Billetera.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SalaryCurrencies.cs">
       <DependentUpon>Billetera.tt</DependentUpon>
     </Compile>
   </ItemGroup>

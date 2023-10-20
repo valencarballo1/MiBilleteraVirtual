@@ -12,21 +12,17 @@ namespace Data
     using System;
     using System.Collections.Generic;
     
-    public partial class Salaries
+    public partial class CurrencyTypes
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Salaries()
+        public CurrencyTypes()
         {
-            this.Expenses = new HashSet<Expenses>();
             this.SalaryCurrencies = new HashSet<SalaryCurrencies>();
         }
     
-        public int SalaryID { get; set; }
-        public Nullable<decimal> Amount { get; set; }
-        public string Period { get; set; }
+        public int CurrencyID { get; set; }
+        public string CurrencyName { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Expenses> Expenses { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalaryCurrencies> SalaryCurrencies { get; set; }
     }
