@@ -25,10 +25,10 @@ namespace Data
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Expenses> Expenses { get; set; }
+        public virtual DbSet<CurrencyTypes> CurrencyTypes { get; set; }
         public virtual DbSet<ExpenseTypes> ExpenseTypes { get; set; }
         public virtual DbSet<Salaries> Salaries { get; set; }
-        public virtual DbSet<CurrencyTypes> CurrencyTypes { get; set; }
         public virtual DbSet<SalaryCurrencies> SalaryCurrencies { get; set; }
+        public virtual DbSet<Expenses> Expenses { get; set; }
     }
 }

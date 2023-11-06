@@ -133,6 +133,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\DineroController.cs" />
     <Compile Include="Controllers\GastoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SalarioController.cs" />
@@ -194,6 +195,7 @@
     <Content Include="Views\Gasto\NuevoTipoGasto.cshtml" />
     <Content Include="Views\Salario\Index.cshtml" />
     <Content Include="Views\Gasto\Detalles.cshtml" />
+    <Content Include="Views\Dinero\NuevoTipoDinero.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,87 @@
+﻿
+@{
+}
+
+<h4 class="text-center">Nuevo Tipo Billetera</h4>
+
+<div class="form-group">
+    <input type="hidden" id="salaryID" name="salaryID" value="@Model"> <!-- Campo oculto para salaryID -->
+    <label for="amount">Monto:</label>
+    <input type="number" id="TotalMoney" name="TotalMoney" step="0.01" class="form-control" required>
+</div>
+<div class="form-group">
+    <label for="ExpenseTypeID">Tipo de gasto:</label>
+    <select class="form-control" id="tipoDinero" name="CurrencyId">
+        <option value="">Seleccionar Tipo Billetera</option>
+    </select>
+</div>
+
+<button id="submitButton" class="btn-submit">Agregar Tipo Gasto</button>
+
+<script>
+
+    $(document).ready(function () {
+
+        $.ajax({
+            url: '@Url.Action("GetAllTipos", "Dinero")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+        // Código para agregar las opciones al DropDownList
+                var dropdownList = $('#tipoDinero'); // Reemplaza "IdRol" con el ID del elemento DropDownList en tu vista
+        console.log(data);
+        // Agregar las opciones al DropDownList
+        $.each(data, function (index, tipo) {
+            dropdownList.append($('<option></option>').val(tipo.id).text(tipo.name));
+        });
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Error en la llamada AJAX: " + textStatus + ", " + errorThrown);
+            }
+        });
+
+    });
+
+    $("#submitButton").on("click", function () {
+        var salaryID = $("#salaryID").val();
+        var totalMoney = $("#TotalMoney").val();
+        var currencyID = $("#tipoDinero").val();
+        console.log(totalMoney);
+        var data = {
+            SalaryId: salaryID,
+            TotalMoney: totalMoney,
+            CurrencyId: currencyID
+        };
+
+        // Realizar la solicitud AJAX
+        $.ajax({
+            url: '@Url.Action("AgregarTipoDinero", "Dinero")',
+            type: 'POST',
+            data: JSON.stringify(data),
+            contentType: 'application/json',
+            success: function (response) {
+                if (response === true) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Éxito',
+                        text: 'La operación se realizó con éxito.'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Hubo un problema al realizar la operación.'
+                    });
+                }
+            },
+            error: function () {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Hubo un problema al comunicarse con el servidor.'
+                });
+            }
+        });
+    });
+</script>

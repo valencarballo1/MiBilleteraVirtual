@@ -17,8 +17,8 @@ namespace Data
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Salaries()
         {
-            this.Expenses = new HashSet<Expenses>();
             this.SalaryCurrencies = new HashSet<SalaryCurrencies>();
+            this.Expenses = new HashSet<Expenses>();
         }
     
         public int SalaryID { get; set; }
@@ -26,8 +26,8 @@ namespace Data
         public string Period { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Expenses> Expenses { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalaryCurrencies> SalaryCurrencies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Expenses> Expenses { get; set; }
     }
 }

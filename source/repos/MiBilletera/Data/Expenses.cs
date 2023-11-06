@@ -21,7 +21,9 @@ namespace Data
         public Nullable<int> ExpenseTypeID { get; set; }
         public Nullable<bool> IsActive { get; set; }
         public Nullable<int> SalaryID { get; set; }
+        public Nullable<int> SalaryCurrenciesId { get; set; }
     
+        public virtual CurrencyTypes CurrencyTypes { get; set; }
         public virtual ExpenseTypes ExpenseTypes { get; set; }
         public virtual Salaries Salaries { get; set; }
     }

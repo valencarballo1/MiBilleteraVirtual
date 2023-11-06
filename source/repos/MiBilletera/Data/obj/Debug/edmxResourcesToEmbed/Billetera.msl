@@ -1,16 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="BilleteraModelStoreContainer" CdmEntityContainer="BilleteraEntities">
-    <EntitySetMapping Name="Expenses">
-      <EntityTypeMapping TypeName="BilleteraModel.Expenses">
-        <MappingFragment StoreEntitySet="Expenses">
-          <ScalarProperty Name="SalaryID" ColumnName="SalaryID" />
-          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-          <ScalarProperty Name="ExpenseTypeID" ColumnName="ExpenseTypeID" />
-          <ScalarProperty Name="Description" ColumnName="Description" />
-          <ScalarProperty Name="Amount" ColumnName="Amount" />
-          <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
-          <ScalarProperty Name="ExpenseID" ColumnName="ExpenseID" />
+    <EntitySetMapping Name="CurrencyTypes">
+      <EntityTypeMapping TypeName="BilleteraModel.CurrencyTypes">
+        <MappingFragment StoreEntitySet="CurrencyTypes">
+          <ScalarProperty Name="CurrencyName" ColumnName="CurrencyName" />
+          <ScalarProperty Name="CurrencyID" ColumnName="CurrencyID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -32,20 +27,27 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="CurrencyTypes">
-      <EntityTypeMapping TypeName="BilleteraModel.CurrencyTypes">
-        <MappingFragment StoreEntitySet="CurrencyTypes">
-          <ScalarProperty Name="CurrencyName" ColumnName="CurrencyName" />
-          <ScalarProperty Name="CurrencyID" ColumnName="CurrencyID" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="SalaryCurrencies">
       <EntityTypeMapping TypeName="BilleteraModel.SalaryCurrencies">
         <MappingFragment StoreEntitySet="SalaryCurrencies">
           <ScalarProperty Name="TotalMoney" ColumnName="TotalMoney" />
-          <ScalarProperty Name="CurrencyID" ColumnName="CurrencyID" />
+          <ScalarProperty Name="CurrencyId" ColumnName="CurrencyId" />
+          <ScalarProperty Name="SalaryId" ColumnName="SalaryId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Expenses">
+      <EntityTypeMapping TypeName="BilleteraModel.Expenses">
+        <MappingFragment StoreEntitySet="Expenses">
+          <ScalarProperty Name="SalaryCurrenciesId" ColumnName="SalaryCurrenciesId" />
           <ScalarProperty Name="SalaryID" ColumnName="SalaryID" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="ExpenseTypeID" ColumnName="ExpenseTypeID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="ExpenseDate" ColumnName="ExpenseDate" />
+          <ScalarProperty Name="ExpenseID" ColumnName="ExpenseID" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -105,13 +105,13 @@ button:hover {
             type: 'GET',
             data: { periodo: periodo },
             success: function (data) {
-                if (data.SalaryID > 0) {
+                if (data.SalaryId > 0) {
                     swal("Se encontraron detalles para el periodo " + data.Period, {
                         icon: "success",
                     }).then(() => {
                         // Redireccionar al Home
-                        console.log(data.SalaryID);
-                        window.location.href = '/Home/Index?idSalario=' +  data.SalaryID;
+                        console.log(data.SalaryId);
+                        window.location.href = '/Home/Index?idSalario=' +  data.SalaryId;
                     });
                 } else {
                     swal("Hubo un error en la carga", {

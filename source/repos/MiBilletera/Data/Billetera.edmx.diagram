@@ -5,15 +5,16 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="28b9af4115b74aa4b33fd8cf304bac45" Name="Diagram1">
-        <EntityTypeShape EntityType="BilleteraModel.Expenses" Width="1.5" PointX="3" PointY="1" />
-        <EntityTypeShape EntityType="BilleteraModel.ExpenseTypes" Width="1.5" PointX="0.75" PointY="1.5" />
-        <EntityTypeShape EntityType="BilleteraModel.Salaries" Width="1.5" PointX="6.25" PointY="2.875" />
+        <EntityTypeShape EntityType="BilleteraModel.CurrencyTypes" Width="1.5" PointX="0.75" PointY="1" />
+        <EntityTypeShape EntityType="BilleteraModel.ExpenseTypes" Width="1.5" PointX="3" PointY="0.75" />
+        <EntityTypeShape EntityType="BilleteraModel.Salaries" Width="1.5" PointX="0.75" PointY="3.875" />
+        <EntityTypeShape EntityType="BilleteraModel.SalaryCurrencies" Width="1.5" PointX="3" PointY="3.625" />
+        <AssociationConnector Association="BilleteraModel.FK__SalaryCur__Curre__03F0984C" />
+        <AssociationConnector Association="BilleteraModel.FK__SalaryCur__Salar__02FC7413" />
+        <EntityTypeShape EntityType="BilleteraModel.Expenses" Width="1.5" PointX="5.25" PointY="1.75" />
+        <AssociationConnector Association="BilleteraModel.FK_Expenses_CurrencyTypesId" />
         <AssociationConnector Association="BilleteraModel.FK_ExpenseType" />
         <AssociationConnector Association="BilleteraModel.FK_Salary" />
-        <EntityTypeShape EntityType="BilleteraModel.CurrencyTypes" Width="1.5" PointX="0.75" PointY="8.75" />
-        <EntityTypeShape EntityType="BilleteraModel.SalaryCurrencies" Width="1.5" PointX="3" PointY="5.5" />
-        <AssociationConnector Association="BilleteraModel.FK__SalaryCur__Curre__797309D9" />
-        <AssociationConnector Association="BilleteraModel.FK__SalaryCur__Salar__787EE5A0" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

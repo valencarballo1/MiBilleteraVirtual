@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,6 +29,20 @@ namespace Repository.DTO
         {
             public int ExpenseTypeId { get; set; }
             public decimal TotalAmount { get; set; }
+        }
+
+        public class TipoDineroDTO
+        {
+            public int Id { get; set; }
+            public int CurrencyId { get; set; }
+            public decimal TotalMoney { get; set; }
+            public string CurrencyName { get; set; }
+        }
+
+        public class TipoPlataformaDTO
+        {
+            public int id { get; set; }
+            public string name { get; set; }
         }
     }
 }

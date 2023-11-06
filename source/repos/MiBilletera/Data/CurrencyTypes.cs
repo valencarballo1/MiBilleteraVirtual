@@ -18,6 +18,7 @@ namespace Data
         public CurrencyTypes()
         {
             this.SalaryCurrencies = new HashSet<SalaryCurrencies>();
+            this.Expenses = new HashSet<Expenses>();
         }
     
         public int CurrencyID { get; set; }
@@ -25,5 +26,7 @@ namespace Data
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<SalaryCurrencies> SalaryCurrencies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Expenses> Expenses { get; set; }
     }
 }

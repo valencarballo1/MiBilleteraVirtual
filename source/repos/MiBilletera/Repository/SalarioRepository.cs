@@ -22,7 +22,7 @@ namespace Repository
                     // Mapea los datos a tu clase Salario
                     var salarioClase = new salarioDTO
                     {
-                        SalaryID = salario.SalaryID,
+                        SalaryId = salario.SalaryID,
                         Amount = salario.Amount.Value,
                         Period = salario.Period,
                         // Mapea otras propiedades
@@ -46,7 +46,7 @@ namespace Repository
 
         public class salarioDTO
         {
-            public int SalaryID { get; set; }
+            public int SalaryId { get; set; }
             public decimal Amount { get; set; }
             public string Period { get; set; }
             // Otras propiedades

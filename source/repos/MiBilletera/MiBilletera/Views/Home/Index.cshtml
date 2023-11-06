@@ -16,8 +16,8 @@
         <button class="btn btn-primary rounded-pill" id="btnObtenerContenido">Obtener valor del dólar blue</button>
     </div>
 
-    <div class="d-flex flex-wrap">
-        <div class="dashboard col-md-6 mb-4">
+    <div class="d-flex">
+        <div class="dashboard col-md-5 mb-4">
             <h2>Dashboard</h2>
             <div class="pie-chart">
                 <!-- Aquí puedes agregar tu gráfica de pastel -->
@@ -26,7 +26,7 @@
             <button class="btn btn-primary" id="verDetalleGasto">Ver gastos</button>
         </div>
 
-        <div class="expense-form col-md-6 mb-4">
+        <div class="expense-form col-md-4 mb-4">
             <div class="mb-3">
                 <button class="btn btn-primary rounded-pill" onclick="loadModalContent()">Agregar tipo de gasto nuevo</button>
             </div>
@@ -50,9 +50,31 @@
                         <!-- Add options here -->
                     </select>
                 </div>
+                <div class="form-group">
+                    <label for="ExpenseTypeID">Plataforma:</label>
+                    <select class="form-control" id="dineroTipo" name="SalaryCurrenciesId">
+                        <option value="">Seleccionar Plataforma</option>
+                        <!-- Add options here -->
+                    </select>
+                </div>
 
                 <button type="submit" class="btn btn-primary rounded-pill">Agregar Gasto</button>
             </form>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <button class="btn btn-primary rounded-pill" onclick="loadTipoDinero()">Agregar tipo de dinero</button>
+            <h2>Mi dinero</h2>
+            <table class="table table-responsive">
+                <thead>
+                    <tr>
+                        <th class="text-nowrap">Plataforma</th>
+                        <th class="text-nowrap">Monto</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaTipoDinero">
+                </tbody>
+            </table>
         </div>
     </div>
 
@@ -74,6 +96,7 @@
 </main>
 
 <script type="text/javascript">
+        let idSalario = $('#idSalario').data('id');
     $(document).ready(function () {
         $('#btnObtenerContenido').click(function () {
             obtenerContenidoDiv();
@@ -98,13 +121,46 @@
             }
         });
 
+        $.ajax({
+            url: '@Url.Action("GetAllTipos", "Dinero")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+        // Código para agregar las opciones al DropDownList
+                var dropdownList = $('#dineroTipo'); // Reemplaza "IdRol" con el ID del elemento DropDownList en tu vista
+        console.log(data);
+        // Agregar las opciones al DropDownList
+        $.each(data, function (index, tipo) {
+            dropdownList.append($('<option></option>').val(tipo.id).text(tipo.name));
+        });
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Error en la llamada AJAX: " + textStatus + ", " + errorThrown);
+            }
+        });
+
+        $.ajax({
+            url: '@Url.Action("GetTipoBySalario", "Dinero")',
+            type: 'GET',
+            data: { idSalario: idSalario},
+            success: function (data) {
+                $("#tablaTipoDinero").empty();
+
+                $.each(data, function (index, item) {
+                    $("#tablaTipoDinero").append("<tr><td>" + item.CurrencyName + "</td><td>" + item.TotalMoney + "</td></tr>");
+                });
+            },
+            error: function () {
+                alert("Hubo un error al obtener los datos de la tabla.");
+            }
+        });
+
     });
-    let idSalario = $('#idSalario').data('id');
 
     console.log('idSalario:', idSalario);
 
     document.getElementById('verDetalleGasto').addEventListener('click', function () {
-        // Code to execute when the button is clicked
         console.log('Button with ID "verDetalleGasto" was clicked.');
         window.location.href = '/Gasto/Detalles?idSalario=' + idSalario;
     });
@@ -126,15 +182,22 @@
     }
 
     function loadModalContent() {
-        // Obtener la URL de la vista para el contenido del modal
         var url = '@Url.Action("NuevoTipoGasto", "Gasto")';  // Reemplaza YourController con tu controlador
 
-        // Realizar la solicitud AJAX para cargar el contenido de la vista
         $.get(url, function (data) {
-            // Insertar el contenido de la vista en el cuerpo del modal
             $('#modalContent').html(data);
 
             // Mostrar el modal
+            $('#modalAgregarTipoGasto').modal('show');
+        });
+    }
+
+    function loadTipoDinero() {
+        var url = "/Dinero/NuevoTipoDinero?idSalario=" + idSalario;  // Reemplaza YourController con tu controlador
+
+        $.get(url, function (data) {
+            $('#modalContent').html(data);
+
             $('#modalAgregarTipoGasto').modal('show');
         });
     }
@@ -175,7 +238,6 @@
 
     var ctx = document.getElementById('pieChart').getContext('2d');
 
-    // Llamar a la acción para obtener los datos del gráfico
     $.ajax({
         url: '@Url.Action("ObtenerDatosGrafico", "Gasto")',
         type: 'GET',

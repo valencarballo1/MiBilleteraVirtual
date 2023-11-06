@@ -14,8 +14,9 @@ namespace Data
     
     public partial class SalaryCurrencies
     {
-        public int SalaryID { get; set; }
-        public int CurrencyID { get; set; }
+        public int Id { get; set; }
+        public Nullable<int> SalaryId { get; set; }
+        public Nullable<int> CurrencyId { get; set; }
         public Nullable<decimal> TotalMoney { get; set; }
     
         public virtual CurrencyTypes CurrencyTypes { get; set; }

@@ -18,6 +18,7 @@
     <Property Name="ExpenseTypeID" Type="int" />
     <Property Name="IsActive" Type="bit" />
     <Property Name="SalaryID" Type="int" />
+    <Property Name="SalaryCurrenciesId" Type="int" />
   </EntityType>
   <EntityType Name="ExpenseTypes">
     <Key>
@@ -37,34 +38,46 @@
   </EntityType>
   <EntityType Name="SalaryCurrencies">
     <Key>
-      <PropertyRef Name="SalaryID" />
-      <PropertyRef Name="CurrencyID" />
+      <PropertyRef Name="Id" />
     </Key>
-    <Property Name="SalaryID" Type="int" Nullable="false" />
-    <Property Name="CurrencyID" Type="int" Nullable="false" />
-    <Property Name="TotalMoney" Type="decimal" Precision="18" Scale="2" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SalaryId" Type="int" />
+    <Property Name="CurrencyId" Type="int" />
+    <Property Name="TotalMoney" Type="decimal" Precision="10" Scale="2" />
   </EntityType>
-  <Association Name="FK__SalaryCur__Curre__797309D9">
-    <End Role="CurrencyTypes" Type="Self.CurrencyTypes" Multiplicity="1" />
+  <Association Name="FK__SalaryCur__Curre__03F0984C">
+    <End Role="CurrencyTypes" Type="Self.CurrencyTypes" Multiplicity="0..1" />
     <End Role="SalaryCurrencies" Type="Self.SalaryCurrencies" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="CurrencyTypes">
         <PropertyRef Name="CurrencyID" />
       </Principal>
       <Dependent Role="SalaryCurrencies">
-        <PropertyRef Name="CurrencyID" />
+        <PropertyRef Name="CurrencyId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK__SalaryCur__Salar__787EE5A0">
-    <End Role="Salaries" Type="Self.Salaries" Multiplicity="1" />
+  <Association Name="FK__SalaryCur__Salar__02FC7413">
+    <End Role="Salaries" Type="Self.Salaries" Multiplicity="0..1" />
     <End Role="SalaryCurrencies" Type="Self.SalaryCurrencies" Multiplicity="*" />
     <ReferentialConstraint>
       <Principal Role="Salaries">
         <PropertyRef Name="SalaryID" />
       </Principal>
       <Dependent Role="SalaryCurrencies">
-        <PropertyRef Name="SalaryID" />
+        <PropertyRef Name="SalaryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Expenses_CurrencyTypesId">
+    <End Role="CurrencyTypes" Type="Self.CurrencyTypes" Multiplicity="0..1" />
+    <End Role="Expenses" Type="Self.Expenses" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CurrencyTypes">
+        <PropertyRef Name="CurrencyID" />
+      </Principal>
+      <Dependent Role="Expenses">
+        <PropertyRef Name="SalaryCurrenciesId" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -98,13 +111,17 @@
     <EntitySet Name="ExpenseTypes" EntityType="Self.ExpenseTypes" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Salaries" EntityType="Self.Salaries" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="SalaryCurrencies" EntityType="Self.SalaryCurrencies" Schema="dbo" store:Type="Tables" />
-    <AssociationSet Name="FK__SalaryCur__Curre__797309D9" Association="Self.FK__SalaryCur__Curre__797309D9">
+    <AssociationSet Name="FK__SalaryCur__Curre__03F0984C" Association="Self.FK__SalaryCur__Curre__03F0984C">
       <End Role="CurrencyTypes" EntitySet="CurrencyTypes" />
       <End Role="SalaryCurrencies" EntitySet="SalaryCurrencies" />
     </AssociationSet>
-    <AssociationSet Name="FK__SalaryCur__Salar__787EE5A0" Association="Self.FK__SalaryCur__Salar__787EE5A0">
+    <AssociationSet Name="FK__SalaryCur__Salar__02FC7413" Association="Self.FK__SalaryCur__Salar__02FC7413">
       <End Role="Salaries" EntitySet="Salaries" />
       <End Role="SalaryCurrencies" EntitySet="SalaryCurrencies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Expenses_CurrencyTypesId" Association="Self.FK_Expenses_CurrencyTypesId">
+      <End Role="CurrencyTypes" EntitySet="CurrencyTypes" />
+      <End Role="Expenses" EntitySet="Expenses" />
     </AssociationSet>
     <AssociationSet Name="FK_ExpenseType" Association="Self.FK_ExpenseType">
       <End Role="ExpenseTypes" EntitySet="ExpenseTypes" />

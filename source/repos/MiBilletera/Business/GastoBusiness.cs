@@ -12,10 +12,12 @@ namespace Business
     public class GastoBusiness
     {
         private GastoRepository _GastoRepository;
+        private DineroRepository _DineroRepository;
 
         public GastoBusiness()
         {
             this._GastoRepository = new GastoRepository();
+            this._DineroRepository = new DineroRepository();
         }
         public List<Expenses> GetAll()
         {
@@ -32,6 +34,7 @@ namespace Business
             try
             {
                 Expenses gastoAEditar = _GastoRepository.Get(gasto.ExpenseID);
+                SalaryCurrencies tipoDinero = _DineroRepository.GetIdTipo(gasto.SalaryCurrenciesId);
 
                 if (gastoAEditar != null)
                 {
@@ -43,9 +46,14 @@ namespace Business
                 }
                 else
                 {
-                    gasto.ExpenseDate = DateTime.Now;
-                    gasto.IsActive = true;
-                    _GastoRepository.Grabar(gasto);
+                    if (gasto.Amount <= tipoDinero.TotalMoney)
+                    {
+                        gasto.ExpenseDate = DateTime.Now;
+                        gasto.IsActive = true;
+                        _GastoRepository.Grabar(gasto);
+                        tipoDinero.TotalMoney = tipoDinero.TotalMoney - gasto.Amount;
+                        _DineroRepository.Save(tipoDinero);
+                    }
                 }
             }
             catch (Exception)
@@ -53,12 +61,11 @@ namespace Business
 
                 throw;
             }
-
         }
 
         public void GrabarTipoGasto(ExpenseTypes tipoGasto)
         {
-            if(tipoGasto.ExpenseTypeID == 0)
+            if (tipoGasto.ExpenseTypeID == 0)
             {
                 _GastoRepository.GrabarTipoGasto(tipoGasto);
             }
