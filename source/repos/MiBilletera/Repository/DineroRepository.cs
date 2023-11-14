@@ -11,12 +11,14 @@ namespace Repository
 {
     public class DineroRepository
     {
-        public bool Save(SalaryCurrencies tipoDinero)
+        public bool Save(SalaryCurrencies tipoDinero, decimal amount)
         {
             using(BilleteraEntities db = new BilleteraEntities())
             {
+                decimal totalDeDinero = this.LoadById(tipoDinero.SalaryId.Value).Sum(s => s.TotalMoney);
+                totalDeDinero = totalDeDinero + tipoDinero.TotalMoney.Value;
                 bool seGuardo = false;
-                if(tipoDinero != null)
+                if(tipoDinero != null && totalDeDinero <= amount)
                 {
                     db.SalaryCurrencies.AddOrUpdate(tipoDinero);
                     db.SaveChanges();

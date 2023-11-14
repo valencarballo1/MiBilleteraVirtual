@@ -38,6 +38,13 @@ namespace MiBilletera.Controllers
             return Json("Ok");
         }
 
-        
+        [HttpGet]
+        public JsonResult GetSueldoTotal(int idSalario)
+        {
+            decimal salario = _SalarioBusiness.GetSueldoTotal(idSalario);
+            return Json(salario, JsonRequestBehavior.AllowGet);
+        } 
+
+
     }
 }

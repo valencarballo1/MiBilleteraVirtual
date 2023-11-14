@@ -12,15 +12,18 @@ namespace Business
     public class DineroBusiness
     {
         private DineroRepository _DineroRepository;
+        private SalarioRepository _SalarioRepository;
 
         public DineroBusiness()
         {
             this._DineroRepository = new DineroRepository();
+            this._SalarioRepository = new SalarioRepository();
         }
 
         public bool Save(SalaryCurrencies tipoDinero)
         {
-            return _DineroRepository.Save(tipoDinero);
+            Salaries salario = _SalarioRepository.GetById(tipoDinero.SalaryId.Value);
+            return _DineroRepository.Save(tipoDinero, salario.Amount.Value);
         }
 
         public List<TipoDineroDTO> Load()

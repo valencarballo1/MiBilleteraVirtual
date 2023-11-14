@@ -13,11 +13,13 @@ namespace Business
     {
         private GastoRepository _GastoRepository;
         private DineroRepository _DineroRepository;
+        private SalarioRepository _SalarioRepository;
 
         public GastoBusiness()
         {
             this._GastoRepository = new GastoRepository();
             this._DineroRepository = new DineroRepository();
+            this._SalarioRepository = new SalarioRepository();
         }
         public List<Expenses> GetAll()
         {
@@ -35,6 +37,8 @@ namespace Business
             {
                 Expenses gastoAEditar = _GastoRepository.Get(gasto.ExpenseID);
                 SalaryCurrencies tipoDinero = _DineroRepository.GetIdTipo(gasto.SalaryCurrenciesId);
+                Salaries salario = _SalarioRepository.GetById(tipoDinero.SalaryId.Value);
+
 
                 if (gastoAEditar != null)
                 {
@@ -52,7 +56,7 @@ namespace Business
                         gasto.IsActive = true;
                         _GastoRepository.Grabar(gasto);
                         tipoDinero.TotalMoney = tipoDinero.TotalMoney - gasto.Amount;
-                        _DineroRepository.Save(tipoDinero);
+                        _DineroRepository.Save(tipoDinero, salario.Amount.Value);
                     }
                 }
             }

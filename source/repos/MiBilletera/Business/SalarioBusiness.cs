@@ -3,6 +3,7 @@ using Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using static Repository.SalarioRepository;
@@ -21,6 +22,11 @@ namespace Business
         public salarioDTO Get(string periodo)
         {
             return _SalarioRepository.Get(periodo);
+        }
+
+        public decimal GetSueldoTotal(int idSalario)
+        {
+            return _SalarioRepository.GetSueldoTotal(idSalario);
         }
 
         public void Grabar(Salaries salario)

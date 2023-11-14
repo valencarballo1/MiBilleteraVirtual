@@ -35,6 +35,22 @@ namespace Repository
             }
         }
 
+        public Salaries GetById(int salaryId)
+        {
+            using(BilleteraEntities db = new BilleteraEntities())
+            {
+                return db.Salaries.Where(s => s.SalaryID == salaryId).FirstOrDefault();
+            }
+        }
+
+        public decimal GetSueldoTotal(int idSalario)
+        {
+            using (BilleteraEntities db = new BilleteraEntities())
+            {
+                return db.Salaries.Where(s => s.SalaryID == idSalario).FirstOrDefault().Amount.Value;
+            }
+        }
+
         public void Grabar(Salaries salario)
         {
             using(BilleteraEntities db = new BilleteraEntities())

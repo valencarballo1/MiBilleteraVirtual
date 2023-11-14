@@ -9,7 +9,9 @@
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h3>Precio del dólar hoy</h3>
-        <span id="resultado"></span>
+        <span  class="badge bg-secondary" id="resultado"></span>
+
+        <span class="badge bg-secondary" id="sueldoTotal"></span>
     </div>
 
     <div class="mb-4">
@@ -102,6 +104,8 @@
             obtenerContenidoDiv();
         });
 
+        obtenerSueldoTotal();
+
         $.ajax({
             url: '@Url.Action("GetAllTipoGasto", "Gasto")',
             type: 'GET',
@@ -172,6 +176,22 @@
             type: 'GET',
             success: function (data) {
                 $('#resultado').html(data);
+                console.log(data);
+            },
+            error: function (error) {
+                console.error('Error al obtener el contenido del div:', error);
+                $('#resultado').html('Error al obtener el contenido del div.');
+            }
+        });
+    }
+
+    function obtenerSueldoTotal() {
+        $.ajax({
+            url: '@Url.Action("GetSueldoTotal", "Salario")',
+            data: { idSalario: idSalario },
+            type: 'GET',
+            success: function (data) {
+                $('#sueldoTotal').html('Sueldo $' + data);
                 console.log(data);
             },
             error: function (error) {
