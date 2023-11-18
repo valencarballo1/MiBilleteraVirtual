@@ -19,6 +19,8 @@
 <button id="submitButton" class="btn-submit">Agregar Tipo Gasto</button>
 
 <script>
+    let urlIndex = "/Home/Index?idSalario=" + idSalario;
+
     $(document).ready(function () {
 
         $.ajax({
@@ -61,25 +63,23 @@
             contentType: 'application/json',
             success: function (response) {
                 if (response === true) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Éxito',
-                        text: 'La operación se realizó con éxito.'
+                    swal("Tu plataforma fue agregada exitosamente", {
+                        icon: "success",
+                    })
+                    .then(() => {
+                        // Redireccionar al Home
+                        window.location.href = urlIndex;
                     });
                 } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Hubo un problema al realizar la operación.'
+                    swal("No se pudo agregar tu plataforma.", {
+                        icon: "success",
                     });
                 }
             },
             error: function () {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Hubo un problema al comunicarse con el servidor.'
-                });
+                swal("No se pudo agregar tu plataforma.", {
+                    icon: "error",
+                })
             }
         });
     });

@@ -8,27 +8,27 @@
     </div>
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3>Precio del dólar hoy</h3>
-        <span  class="badge bg-secondary" id="resultado"></span>
+        <div class="mb-4">
+            <button class="btn btn-primary rounded-pill" id="btnObtenerContenido">Obtener valor del dólar blue</button>
+            <span class="badge bg-secondary" id="resultado"></span>
+        </div>
 
         <span class="badge bg-secondary" id="sueldoTotal"></span>
     </div>
 
-    <div class="mb-4">
-        <button class="btn btn-primary rounded-pill" id="btnObtenerContenido">Obtener valor del dólar blue</button>
-    </div>
 
-    <div class="d-flex">
-        <div class="dashboard col-md-5 mb-4">
+
+    <div class="d-flex row">
+        <div class="dashboard col-md-3 col-sm-12 col-12">
             <h2>Dashboard</h2>
-            <div class="pie-chart">
+            <div class="pie-chart col-6">
                 <!-- Aquí puedes agregar tu gráfica de pastel -->
                 <canvas id="pieChart"></canvas>
             </div>
-            <button class="btn btn-primary" id="verDetalleGasto">Ver gastos</button>
+            <button class="btn btn-primary" id="verDetalleGasto" onclick="loadModalDetalle()">Ver gastos</button>
         </div>
 
-        <div class="expense-form col-md-4 mb-4">
+        <div class="col-md-3 col-sm-7 col-2">
             <div class="mb-3">
                 <button class="btn btn-primary rounded-pill" onclick="loadModalContent()">Agregar tipo de gasto nuevo</button>
             </div>
@@ -64,7 +64,7 @@
             </form>
         </div>
 
-        <div class="col-md-3 mb-4">
+        <div class="col-md-3 col-sm-5 col-5">
             <button class="btn btn-primary rounded-pill" onclick="loadTipoDinero()">Agregar tipo de dinero</button>
             <h2>Mi dinero</h2>
             <table class="table table-responsive">
@@ -88,6 +88,19 @@
                     <!-- Add modal header content -->
                 </div>
                 <div class="modal-body" id="modalContent">
+                    <!-- Contenido de la vista del tipo de gasto se cargará aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalVerDetalleGasto" tabindex="-1" role="dialog" aria-labelledby="modalVerDetalleGasto" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- Add modal header content -->
+                </div>
+                <div class="modal-detalleGastos" id="modalDetalle">
                     <!-- Contenido de la vista del tipo de gasto se cargará aquí -->
                 </div>
             </div>
@@ -164,10 +177,10 @@
 
     console.log('idSalario:', idSalario);
 
-    document.getElementById('verDetalleGasto').addEventListener('click', function () {
-        console.log('Button with ID "verDetalleGasto" was clicked.');
-        window.location.href = '/Gasto/Detalles?idSalario=' + idSalario;
-    });
+    //document.getElementById('verDetalleGasto').addEventListener('click', function () {
+    //    console.log('Button with ID "verDetalleGasto" was clicked.');
+    //    window.location.href = '/Gasto/Detalles?idSalario=' + idSalario;
+    //});
 
 
     function obtenerContenidoDiv() {
@@ -191,7 +204,7 @@
             data: { idSalario: idSalario },
             type: 'GET',
             success: function (data) {
-                $('#sueldoTotal').html('Sueldo $' + data);
+                $('#sueldoTotal').html('SUELDO NETO $' + data);
                 console.log(data);
             },
             error: function (error) {
@@ -209,6 +222,17 @@
 
             // Mostrar el modal
             $('#modalAgregarTipoGasto').modal('show');
+        });
+    }
+
+    function loadModalDetalle() {
+        var url = "/Gasto/Detalles?idSalario=" + idSalario;
+
+        $.get(url, function (data) {
+            $('#modalDetalle').html(data);
+
+            // Mostrar el modal
+            $('#modalVerDetalleGasto').modal('show');
         });
     }
 

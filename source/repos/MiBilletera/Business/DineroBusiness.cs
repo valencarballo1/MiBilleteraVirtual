@@ -23,7 +23,18 @@ namespace Business
         public bool Save(SalaryCurrencies tipoDinero)
         {
             Salaries salario = _SalarioRepository.GetById(tipoDinero.SalaryId.Value);
-            return _DineroRepository.Save(tipoDinero, salario.Amount.Value);
+            SalaryCurrencies tipoDineroExistente = _SalarioRepository.GetTipoDineroCargado(tipoDinero.CurrencyId, tipoDinero.SalaryId);
+            if (tipoDineroExistente != null)
+            {
+                tipoDineroExistente.TotalMoney += tipoDinero.TotalMoney;
+                return _DineroRepository.Save(tipoDineroExistente, salario.Amount.Value);
+            }
+            else
+            {
+
+                return _DineroRepository.Save(tipoDinero, salario.Amount.Value);
+            }
+
         }
 
         public List<TipoDineroDTO> Load()

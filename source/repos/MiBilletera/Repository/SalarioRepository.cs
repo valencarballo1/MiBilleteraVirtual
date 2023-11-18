@@ -51,6 +51,14 @@ namespace Repository
             }
         }
 
+        public SalaryCurrencies GetTipoDineroCargado(int? currencyId, int? salaryId)
+        {
+            using(BilleteraEntities db = new BilleteraEntities())
+            {
+                return db.SalaryCurrencies.Where(s => s.CurrencyId == currencyId && s.SalaryId == salaryId).FirstOrDefault();
+            }
+        }
+
         public void Grabar(Salaries salario)
         {
             using(BilleteraEntities db = new BilleteraEntities())

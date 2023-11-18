@@ -40,7 +40,7 @@ namespace Business
                 Salaries salario = _SalarioRepository.GetById(tipoDinero.SalaryId.Value);
 
 
-                if (gastoAEditar != null)
+                if (gastoAEditar != null && gastoAEditar.Amount <= tipoDinero.TotalMoney)
                 {
                     gastoAEditar.Description = gasto.Description;
                     gastoAEditar.Amount = gasto.Amount;

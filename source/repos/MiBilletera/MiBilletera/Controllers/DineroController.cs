@@ -33,8 +33,8 @@ namespace MiBilletera.Controllers
         {
             try
             {
-                _DineroBusiness.Save(tipoDinero);
-                return Json("Ok");
+                bool save = _DineroBusiness.Save(tipoDinero);
+                return Json(save, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
             {
