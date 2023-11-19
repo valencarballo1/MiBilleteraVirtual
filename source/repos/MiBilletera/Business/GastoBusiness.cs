@@ -31,10 +31,11 @@ namespace Business
             return _GastoRepository.Get(id);
         }
 
-        public void Grabar(Expenses gasto)
+        public bool Grabar(Expenses gasto)
         {
             try
             {
+                bool grabo = false;
                 Expenses gastoAEditar = _GastoRepository.Get(gasto.ExpenseID);
                 SalaryCurrencies tipoDinero = _DineroRepository.GetIdTipo(gasto.SalaryCurrenciesId);
                 Salaries salario = _SalarioRepository.GetById(tipoDinero.SalaryId.Value);
@@ -47,6 +48,7 @@ namespace Business
                     gastoAEditar.ExpenseDate = DateTime.Now;
                     gastoAEditar.ExpenseTypeID = gasto.ExpenseTypeID;
                     _GastoRepository.Grabar(gastoAEditar);
+                    grabo = true;
                 }
                 else
                 {
@@ -56,9 +58,10 @@ namespace Business
                         gasto.IsActive = true;
                         _GastoRepository.Grabar(gasto);
                         tipoDinero.TotalMoney = tipoDinero.TotalMoney - gasto.Amount;
-                        _DineroRepository.Save(tipoDinero, salario.Amount.Value);
+                        grabo = _DineroRepository.Save(tipoDinero, salario.Amount.Value);
                     }
                 }
+                return grabo;
             }
             catch (Exception)
             {

@@ -34,8 +34,16 @@ namespace MiBilletera.Controllers
         {
             try
             {
-                _GastoBusiness.Grabar(gasto);
-                return Json("Ok");
+
+                bool grabo = _GastoBusiness.Grabar(gasto);
+                if (grabo)
+                {
+                    return Json("Ok");
+                }
+                else
+                {
+                    throw new Exception();
+                }
 
             }
             catch (Exception)
@@ -74,7 +82,7 @@ namespace MiBilletera.Controllers
             var cantidadDeGastos = new List<decimal>();
             List<ExpenseTypeDTO> lista = _GastoBusiness.GetTipoGastoConGastos(idSalario);
             List<ExpenseGroupDTO> montoGastos = _GastoBusiness.GetExpenseTotalsByExpenseType(idSalario);
-            
+
             foreach (ExpenseTypeDTO i in lista)
             {
                 tiposDeGasto.Add(i.ExpenseTypeName);
