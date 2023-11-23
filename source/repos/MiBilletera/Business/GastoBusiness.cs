@@ -37,11 +37,13 @@ namespace Business
             {
                 bool grabo = false;
                 Expenses gastoAEditar = _GastoRepository.Get(gasto.ExpenseID);
-                SalaryCurrencies tipoDinero = _DineroRepository.GetIdTipo(gasto.SalaryCurrenciesId);
+                decimal totalDineroGastos = _GastoRepository.GetTotalGastoBySalario(gasto.SalaryID.Value);
+                SalaryCurrencies tipoDinero = _DineroRepository.GetTipoDineroByIdTipo(gasto.SalaryCurrenciesId.Value, gasto.SalaryID.Value);
                 Salaries salario = _SalarioRepository.GetById(tipoDinero.SalaryId.Value);
+                decimal totalGastoACargar = gasto.Amount.Value + totalDineroGastos;
 
 
-                if (gastoAEditar != null && gastoAEditar.Amount <= tipoDinero.TotalMoney)
+                if (gastoAEditar != null && (gastoAEditar.Amount <= tipoDinero.TotalMoney && totalGastoACargar <= salario.Amount.Value))
                 {
                     gastoAEditar.Description = gasto.Description;
                     gastoAEditar.Amount = gasto.Amount;
@@ -52,13 +54,13 @@ namespace Business
                 }
                 else
                 {
-                    if (gasto.Amount <= tipoDinero.TotalMoney)
+                    if (gasto.Amount <= tipoDinero.TotalMoney && totalGastoACargar <= salario.Amount.Value)
                     {
                         gasto.ExpenseDate = DateTime.Now;
                         gasto.IsActive = true;
                         _GastoRepository.Grabar(gasto);
                         tipoDinero.TotalMoney = tipoDinero.TotalMoney - gasto.Amount;
-                        grabo = _DineroRepository.Save(tipoDinero, salario.Amount.Value);
+                        grabo = _DineroRepository.Save(tipoDinero, gasto.Amount.Value);
                     }
                 }
                 return grabo;

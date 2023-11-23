@@ -1,0 +1,115 @@
+﻿<div class="form-group d-flex">
+    <label class="form-label">Dinero a transferir</label>
+    <input type="range" class="form-range mb-2 me-2" value="0" min="0" max="100" step="10" id="moneyRange" />
+    <input type="number" class="form-control h-25 w-50" id="selectedMoneyInput" min="0" max="100" step="10" />
+</div>
+
+<div class="form-group">
+    <label for="ExpenseTypeID">Transferir a:</label>
+    <select class="form-control" id="idTipoDineroAAumentar" name="idTipoDineroAAumentar">
+        <option value="">Seleccionar</option>
+    </select>
+</div>
+
+<button class="btn btn-danger" onclick="Cancelar(idSalario)">Cancelar</button>
+<button class="btn btn-success" id="Transferir">Transferir</button>
+
+
+<script>
+    let maxMoney = 0;
+    let montoATransferir = 0;
+    let idModelo = @Model.Id;
+
+    $(document).ready(function () {
+        $.ajax({
+            url: '@Url.Action("GetAllTipos", "Dinero")',
+            type: 'GET',
+            dataType: 'json',
+            success: function (data) {
+        // Código para agregar las opciones al DropDownList
+                var dropdownList = $('#idTipoDineroAAumentar'); // Reemplaza "IdRol" con el ID del elemento DropDownList en tu vista
+                console.log(data);
+        // Agregar las opciones al DropDownList
+        $.each(data, function (index, tipo) {
+            dropdownList.append($('<option></option>').val(tipo.id).text(tipo.name));
+        });
+            },
+
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("Error en la llamada AJAX: " + textStatus + ", " + errorThrown);
+            }
+        });
+
+
+        maxMoney = parseInt(@Model.TotalMoney);
+
+        document.getElementById("moneyRange").max = maxMoney;
+        document.getElementById("selectedMoneyInput").max = maxMoney;
+
+
+        document.getElementById("moneyRange").addEventListener("input", function () {
+            document.getElementById("selectedMoneyInput").value = this.value;
+            montoATransferir = this.value;
+            console.log("Estoy dentro del this value: " + montoATransferir);
+        });
+
+        document.getElementById("selectedMoneyInput").addEventListener("input", function () {
+            document.getElementById("selectedMoneyInput").value = this.value;
+            montoATransferir = this.value;
+            console.log("Estoy dentro del this value: " + montoATransferir);
+        });
+
+        document.getElementById("selectedMoneyInput").addEventListener("input", function () {
+            // Asegura que el valor esté dentro del rango permitido
+            if (parseInt(this.value) > maxMoney) {
+                this.value = maxMoney;
+            }
+
+            document.getElementById("moneyRange").value = this.value;
+        });
+
+    });
+
+    function Cancelar(idSalario) {
+        window.location.href = '/Home/Index?idSalario=' + idSalario;
+    }
+
+    $("#Transferir").on("click", function () {
+        let idTipoDineroAAumentar = $("#idTipoDineroAAumentar").val();
+        console.log("Estoy dentro del click enviar: " + montoATransferir);
+
+        console.log(idModelo);
+        console.log(idTipoDineroAAumentar);
+
+        // Realizar la solicitud AJAX
+        $.ajax({
+            url: '@Url.Action("Transferir", "Dinero")',
+            type: 'GET',
+            data: {
+                idTipoDineroADescontar: idModelo,
+                idTipoDineroAAumentar: idTipoDineroAAumentar,
+                montoATransferir: montoATransferir
+            },
+            success: function (response) {
+                if (response === true) {
+                    swal("Tu transferencia fue exitosa", {
+                        icon: "success",
+                    })
+                    .then(() => {
+                        // Redireccionar al Home
+                        window.location.href = '/Home/Index?idSalario=' + idSalario;
+                    });
+                } else {
+                    swal("No se pudo transferir.", {
+                        icon: "success",
+                    });
+                }
+            },
+            error: function () {
+                swal("No se pudo transferir.", {
+                    icon: "error",
+                })
+            }
+        });
+    });
+</script>

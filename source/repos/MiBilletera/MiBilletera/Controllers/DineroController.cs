@@ -22,6 +22,13 @@ namespace MiBilletera.Controllers
             return View(idSalario);
         }
 
+        public ActionResult Transferencia(int idTipoDinero, int idSalario)
+        {
+            SalaryCurrencies tipoDinero = _DineroBusiness.GetTipoDineroByIdTipo(idTipoDinero, idSalario);
+            
+            return View(tipoDinero);
+        }
+
         [HttpGet]
         public JsonResult GetAll()
         {
@@ -62,6 +69,13 @@ namespace MiBilletera.Controllers
         {
             List<TipoDineroDTO> tipoDinero = _DineroBusiness.LoadById(idSalario);
             return Json(tipoDinero, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult Transferir(int idTipoDineroADescontar, int idTipoDineroAAumentar, decimal montoATransferir)
+        {
+            bool transferido = _DineroBusiness.Transferir(idTipoDineroADescontar, idTipoDineroAAumentar, montoATransferir);
+            return Json(transferido);
         }
     }
 }

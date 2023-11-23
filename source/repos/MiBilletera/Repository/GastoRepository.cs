@@ -124,8 +124,12 @@ namespace Repository
             }
         }
 
-        
-
-
+        public decimal GetTotalGastoBySalario(int salaryID)
+        {
+            using(BilleteraEntities db = new BilleteraEntities())
+            {
+                return db.Expenses.Where(e => e.SalaryID == salaryID).ToList().Sum(e => e.Amount.Value);
+            }
+        }
     }
 }

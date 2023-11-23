@@ -13,12 +13,14 @@ namespace Repository
     {
         public bool Save(SalaryCurrencies tipoDinero, decimal amount)
         {
-            using(BilleteraEntities db = new BilleteraEntities())
+            using (BilleteraEntities db = new BilleteraEntities())
             {
-                decimal totalDeDinero = this.LoadById(tipoDinero.SalaryId.Value).Sum(s => s.TotalMoney);
-                totalDeDinero = totalDeDinero + tipoDinero.TotalMoney.Value;
+                decimal saldoDinero = this.GetSaldoTotalSalario(tipoDinero.SalaryId.Value);
+                decimal saldoPlataforma = this.GetIdTipoBySalario(tipoDinero.SalaryId.Value);
+                amount += saldoPlataforma;
+                
                 bool seGuardo = false;
-                if(tipoDinero != null && totalDeDinero <= amount)
+                if(tipoDinero != null && amount <= saldoDinero)
                 {
                     db.SalaryCurrencies.AddOrUpdate(tipoDinero);
                     db.SaveChanges();
@@ -26,6 +28,14 @@ namespace Repository
                 }
 
                 return seGuardo;
+            }
+        }
+
+        public decimal GetSaldoTotalSalario(int idSalario)
+        {
+            using(BilleteraEntities db = new BilleteraEntities())
+            {
+                return db.Salaries.Where(s => s.SalaryID == idSalario).FirstOrDefault().Amount.Value;
             }
         }
 
@@ -88,7 +98,31 @@ namespace Repository
         {
             using(BilleteraEntities db = new BilleteraEntities())
             {
-                return db.SalaryCurrencies.Include("CurrencyTypes").Where(s => s.CurrencyId == salaryCurrenciesId).FirstOrDefault();
+                return db.SalaryCurrencies.Include("CurrencyTypes").Where(s => s.Id == salaryCurrenciesId).FirstOrDefault();
+            }
+        }
+
+        public decimal GetIdTipoBySalario(int idSalario)
+        {
+            using (BilleteraEntities db = new BilleteraEntities())
+            {
+                return db.SalaryCurrencies.Where(s => s.SalaryId == idSalario).ToList().Sum(s => s.TotalMoney.Value);
+            }
+        }
+
+        public SalaryCurrencies GetTipoDineroByIdTipo(int idTipoDinero, int idSalario)
+        {
+            using(BilleteraEntities db = new BilleteraEntities())
+            {
+                return db.SalaryCurrencies.Where(s => s.CurrencyId == idTipoDinero && s.SalaryId == idSalario).FirstOrDefault();
+            }
+        }
+
+        public SalaryCurrencies GetByIdAndSalario(int idTipoDineroAAumentar, int? salaryId)
+        {
+            using(BilleteraEntities db = new BilleteraEntities())
+            {
+                return db.SalaryCurrencies.Where(s => s.CurrencyId == idTipoDineroAAumentar && s.SalaryId ==  salaryId).FirstOrDefault();
             }
         }
     }

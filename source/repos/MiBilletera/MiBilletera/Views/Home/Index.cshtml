@@ -1,7 +1,21 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+<style>
 
+    .empty-chart-message {
+        text-align: center;
+        font-size: 16px;
+        font-weight: bold;
+        color: #777;
+        margin-top: 10px;
+        display: none; /* Para ocultar el mensaje inicialmente */
+    }
+
+    .clickable {
+        cursor: pointer;
+    }
+</style>
 <main>
     <div id="idSalario" data-id="@Model" style="display: none;">
         <!-- El valor de idSalario está almacenado en el atributo de datos -->
@@ -19,11 +33,11 @@
 
 
     <div class="d-flex row">
-        <div class="col-md-6 col-sm-6 col-7 p-2">
+        <div class="col-md-4 col-sm-6 col-7 p-2">
             <h2>Dashboard</h2>
-            <div class="pie-chart col-6">
-                <!-- Aquí puedes agregar tu gráfica de pastel -->
+            <div class="pie-chart col-md-3">
                 <canvas id="pieChart"></canvas>
+                <div id="emptyChartMessage" class="empty-chart-message">No hay gastos disponibles</div>
             </div>
             <button class="btn btn-primary" id="verDetalleGasto" onclick="loadModalDetalle()">Ver gastos</button>
         </div>
@@ -72,6 +86,8 @@
                     <tr>
                         <th class="text-nowrap">Plataforma</th>
                         <th class="text-nowrap">Monto</th>
+                        <th class="text-nowrap">Acciones</th>
+
                     </tr>
                 </thead>
                 <tbody id="tablaTipoDinero">
@@ -101,6 +117,19 @@
                     <!-- Add modal header content -->
                 </div>
                 <div class="modal-detalleGastos" id="modalDetalle">
+                    <!-- Contenido de la vista del tipo de gasto se cargará aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalVerTransferencia" tabindex="-1" role="dialog" aria-labelledby="modalVerTransferencia" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- Add modal header content -->
+                </div>
+                <div class="modal-transferencia" id="modalTransferencia">
                     <!-- Contenido de la vista del tipo de gasto se cargará aquí -->
                 </div>
             </div>
@@ -165,7 +194,12 @@
                 $("#tablaTipoDinero").empty();
 
                 $.each(data, function (index, item) {
-                    $("#tablaTipoDinero").append("<tr><td>" + item.CurrencyName + "</td><td>" + item.TotalMoney + "</td></tr>");
+                    $("#tablaTipoDinero").append("<tr><td>" + item.CurrencyName + "</td><td>" + item.TotalMoney + "</td>" +
+                        "</td><td>" +
+                        '<i class="fa-solid fa-arrow-right-arrow-left clickable" style="color: #1f5125;" onclick="Transferir(' + item.CurrencyId + ')"></i>'
+                        + " " +
+                        '<i class="fa-solid fa-trash clickable" style="color: #f90606;"></i>'
+                        + "</td></tr>");
                 });
             },
             error: function () {
@@ -246,6 +280,18 @@
         });
     }
 
+    function Transferir(idTipoDinero) {
+        var url = "/Dinero/Transferencia?idTipoDinero=" + idTipoDinero + "&idSalario=" + idSalario;
+
+        $.get(url, function (data) {
+            $('#modalTransferencia').html(data);
+
+            $('#modalVerTransferencia').modal('show');
+
+            $('#modalVerTransferencia').modal('hide');
+        });
+    }
+
     $('form').submit(function (event) {
         event.preventDefault();
         console.log($(this).serialize());
@@ -283,18 +329,27 @@
     var ctx = document.getElementById('pieChart').getContext('2d');
 
     $.ajax({
-        url: '@Url.Action("ObtenerDatosGrafico", "Gasto")',
-        type: 'GET',
-        dataType: 'json',
-        data: { idSalario: idSalario },
+    url: '@Url.Action("ObtenerDatosGrafico", "Gasto")',
+    type: 'GET',
+    dataType: 'json',
+    data: { idSalario: idSalario },
         success: function (data) {
+            console.log(data.datasets.length);
+            if (data.datasets.length > 0) {
+            // Mostrar el gráfico de pastel si hay datos
+            $("#emptyChartMessage").hide();
+
             var pieChart = new Chart(ctx, {
                 type: 'pie',
                 data: data
             });
-        },
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("Error al obtener los datos para el gráfico: " + textStatus + ", " + errorThrown);
+        } else {
+            // Mostrar el mensaje si no hay datos
+            $("#emptyChartMessage").show();
         }
-    });
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+        console.log("Error al obtener los datos para el gráfico: " + textStatus + ", " + errorThrown);
+    }
+});
 </script>
